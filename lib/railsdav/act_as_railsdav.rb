@@ -386,12 +386,13 @@ module Railsdav
           def fix_path_info(req, path)
             logger.info("CONVERTED: " + Iconv.iconv('UTF-8', 'latin1', URI.unescape(path)).first)
             Iconv.iconv('UTF-8', 'latin1', URI.unescape(path)).first
-            if req.env["HTTP_USER_AGENT"].match(/Microsoft|Windows/)
+            case req.env["HTTP_USER_AGENT"].to_s
+            when /Microsoft|Windows/
               logger.info("CONVERTED: " + Iconv.iconv('UTF-8', 'latin1', URI.unescape(path)).first)
               Iconv.iconv('UTF-8', 'latin1', URI.unescape(path)).first
-            elsif req.env["HTTP_USER_AGENT"].match(/cadaver/)
+            when /cadaver/
               URI.unescape(URI.unescape(path))
-            elsif req.env["HTTP_USER_AGENT"].match(/Darwin|Macintosh/)
+            when /Darwin|Macintosh/
               URI.unescape(path)
             else
               URI.unescape(path)
