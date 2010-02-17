@@ -184,10 +184,9 @@ module Railsdav
       end
   
       def webdav_put()
-        
-         write_content_to_path(@path_info, request.raw_post)
-  
-         render :nothing => true, :status => :created and return
+        dest_resource = get_resource_for_path(@path_info)
+        write_content_to_path(@path_info, request.raw_post)
+        render :nothing => true, :status => (dest_resource.nil? ? :created : :no_content)
       end
   
       def webdav_copy()
